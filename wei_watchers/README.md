@@ -14,8 +14,11 @@ Using Chainlink, this application simply echos incoming ethereum logs.
 
 1. Check out repo [smartcontractkit/chainlink](https://github.com/smartcontractkit/chainlink) and navigate to folder.
 2. Run `./internal/bin/devnet`
-3. Run truffle migrations: `cd solidity && truffle migrate --network devnet`
-4. Run `cd .. && ./internal/bin/cldev`
+3. Run truffle migrations:
+  1. `cd solidity`
+  2. `yarn install`
+  3. `./node_modules/.bin/truffle migrate --network devnet`
+4. Run `./internal/bin/cldev` in top level repo folder
 
 ## Run Wei Watchers
 
@@ -23,6 +26,6 @@ Using Chainlink, this application simply echos incoming ethereum logs.
 2. `./create_cl_job` to create Wei Watchers Chainlink job
 3. `yarn install`
 4. `node echo.js`
-5. `truffle migrate` in another window
+5. `./node_modules/.bin/truffle migrate` in another window
 6. `node send_transaction.js`
 7. Wait for log to show up in echo server
