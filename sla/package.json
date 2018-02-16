@@ -1,5 +1,10 @@
 {
   "dependencies": {
-    "truffle": "^4.0.6"
+    "bignumber.js": "^6.0.0",
+    "chainlink": "github.com:smartcontractkit/chainlink.git",
+    "moment": "^2.20.1",
+    "solidity-stringutils": "github:Arachnid/solidity-stringutils",
+    "truffle": "^4.0.6",
+    "zeppelin-solidity": "github:OpenZeppelin/zeppelin-solidity"
   }
 }
