@@ -4,27 +4,29 @@ import "chainlink/solidity/contracts/Chainlinked.sol";
 import "chainlink/solidity/contracts/Chainlink.sol";
 
 contract UptimeSLA is Chainlinked {
-  uint256 public current;
-  bytes32 public jobId;
-
+  uint256 constant uptimeThreshold = 9999;
+  bytes32 private jobId;
   uint256 private requestId;
+  uint256 private endAt;
   address private client;
   address private serviceProvider;
 
   function UptimeSLA(
     address _client,
     address _serviceProvider,
+    uint256 _startAt,
     address _oracle,
     bytes32 _jobId
   ) public payable {
     client = _client;
     serviceProvider = _serviceProvider;
+    endAt = _startAt + 30 days;
     oracle = Oracle(_oracle);
     jobId = _jobId;
   }
 
   function updateUptime(string _currency) public {
-    Chainlink.Run memory run = newRun(jobId, this, "fulfill(uint256,uint256)");
+    Chainlink.Run memory run = newRun(jobId, this, "report(uint256,uint256)");
     run.add("url", "https://status.heroku.com/api/ui/availabilities?filter%5Bregion%5D=US&page%5Bsize%5D=60");
     string[] memory path = new string[](4);
     path[0] = "data";
@@ -35,14 +37,15 @@ contract UptimeSLA is Chainlinked {
     requestId = chainlinkRequest(run);
   }
 
-  function fulfill(uint256 _requestId, uint256 _rate)
+  function report(uint256 _requestId, uint256 _rate)
     public
     onlyOracle
     checkRequestId(_requestId)
   {
-    current = _rate;
-    if (_rate < 9999) {
+    if (_rate < uptimeThreshold) {
       client.send(this.balance);
+    } else if (block.timestamp >= endAt) {
+      serviceProvider.send(this.balance);
     }
   }
 

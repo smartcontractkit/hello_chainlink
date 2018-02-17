@@ -7,13 +7,14 @@ contract('UptimeSLA', () => {
   let SLA = artifacts.require("UptimeSLA.sol");
   let jobId = "4c7b7ffb66b344fbaa64995af81e355a";
   let deposit = 1000000000;
-  let oc, sla;
-  let client = "0x542B68aE7029b7212A5223ec2867c6a94703BeE3";
-  let serviceProvider = "0xB16E8460cCd76aEC437ca74891D3D358EA7d1d88";
+  let oc, sla, client, serviceProvider, startAt;
 
   beforeEach(async () => {
+    client = newAddress()
+    serviceProvider = newAddress();
     oc = await Oracle.new({from: oracleNode});
-    sla = await SLA.new(client, serviceProvider, oc.address, jobId, {
+    startAt = await getLatestTimestamp();
+    sla = await SLA.new(client, serviceProvider, startAt, oc.address, jobId, {
       value: deposit
     });
   });
@@ -49,13 +50,6 @@ contract('UptimeSLA', () => {
       requestId = event.args.id
     });
 
-    it("records the data given to it by the oracle", async () => {
-      await oc.fulfillData(requestId, response, {from: oracleNode})
-
-      let received = await sla.current.call();
-      assert.equal(1018956, received);
-    });
-
     context("when the value is below 9999", async () => {
       let response = "0x000000000000000000000000000000000000000000000000000000000000270e";
 
@@ -68,6 +62,32 @@ contract('UptimeSLA', () => {
       });
     });
 
+    context("when the value is 9999 or above", () => {
+      let response = "0x000000000000000000000000000000000000000000000000000000000000270f";
+
+      it("does not move the money", async () => {
+        await oc.fulfillData(requestId, response, {from: oracleNode})
+
+        assert.equal(await eth.getBalance(sla.address), deposit);
+        assert.equal(await eth.getBalance(client), 0);
+        assert.equal(await eth.getBalance(serviceProvider), 0);
+      });
+
+      context("and a month has passed", () => {
+        beforeEach(async () => {
+          await fastForwardTo(startAt + days(30));
+        });
+
+        it("gives the money back to the service provider", async () => {
+          await oc.fulfillData(requestId, response, {from: oracleNode})
+
+          assert.equal(await eth.getBalance(sla.address), 0);
+          assert.equal(await eth.getBalance(client), 0);
+          assert.equal(await eth.getBalance(serviceProvider), deposit);
+        });
+      });
+    });
+
     context("when the consumer does not recognize the request ID", () => {
       beforeEach(async () => {
         await oc.requestData(jobId, sla.address, functionSelector("fulfill(uint256,bytes32)"), "");
@@ -75,26 +95,20 @@ contract('UptimeSLA', () => {
         requestId = event.args.id;
       });
 
-      it("does not aslaept the data provided", async () => {
+      it("does not accept the data provided", async () => {
         let tx = await sla.updateUptime("usd");
 
         await assertActionThrows(async () => {
           await oc.fulfillData(requestId, response, {from: oracleNode})
         });
-
-        let received = await sla.current.call();
-        assert.equal(received, 0);
       });
     });
 
     context("when called by anyone other than the oracle contract", () => {
-      it("does not aslaept the data provided", async () => {
+      it("does not accept the data provided", async () => {
         await assertActionThrows(async () => {
-          await sla.fulfill(requestId, response, {from: oracleNode})
+          await sla.report(requestId, response, {from: oracleNode})
         });
-
-        let received = await sla.current.call();
-        assert.equal(received, 0);
       });
     });
   });

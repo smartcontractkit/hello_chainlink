@@ -200,4 +200,22 @@ moment = require('moment');
     return "0x" + web3.sha3(signature).slice(2).slice(0, 8);
   };
 
+  // https://codepen.io/code_monk/pen/FvpfI
+  randomHex = function randomHex(len) {
+    var maxlen = 8;
+    var min = Math.pow(16,Math.min(len,maxlen)-1);
+    var max = Math.pow(16,Math.min(len,maxlen)) - 1;
+    var n   = Math.floor( Math.random() * (max-min+1) ) + min;
+    var r   = n.toString(16);
+    while ( r.length < len ) {
+      r = r + randomHex(len - maxlen);
+    }
+    return r;
+  };
+
+  newAddress = function newAddress() {
+    return "0x" + randomHex(40);
+  };
+
+
 })();
