@@ -70,5 +70,5 @@ The API returns the percentage as a float, for example the current value is `0.9
 2. `./create_x100_http_json_job` to create Wei Watchers Chainlink job
 3. `yarn install`
 4. `node echo.js`
-5. `./node_modules/.bin/truffle migrate` in another window
+5. `./node_modules/.bin/truffle migrate` in another window. Creates the ChainLink Job and deploys the SLA contract.
 6. Run `node send_sla_transaction.js` to trigger an update to the SLA
