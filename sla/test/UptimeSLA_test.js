@@ -29,7 +29,7 @@ contract('UptimeSLA', () => {
 
   describe("#updateUptime", () => {
     it("triggers a log event in the Oracle contract", async () => {
-      let tx = await sla.updateUptime("usd");
+      let tx = await sla.updateUptime("0");
 
       let events = await getEvents(oc);
       assert.equal(1, events.length)
@@ -45,7 +45,7 @@ contract('UptimeSLA', () => {
     let requestId;
 
     beforeEach(async () => {
-      await sla.updateUptime("usd");
+      await sla.updateUptime("0");
       let event = await getLatestEvent(oc);
       requestId = event.args.id
     });
@@ -96,7 +96,7 @@ contract('UptimeSLA', () => {
       });
 
       it("does not accept the data provided", async () => {
-        let tx = await sla.updateUptime("usd");
+        let tx = await sla.updateUptime("0");
 
         await assertActionThrows(async () => {
           await oc.fulfillData(requestId, response, {from: oracleNode})
