@@ -10,37 +10,28 @@ contract('UptimeSLA', () => {
 
   beforeEach(async () => {
     oc = await Oracle.new({from: oracleNode});
-    cc = await SLA.new(oc.address, {from: stranger});
+    cc = await SLA.new(oc.address, jobId, {from: stranger});
   });
 
-  it("has a predictable gas price", async () => {
-    let rec = await eth.getTransactionReceipt(cc.transactionHash);
-    assert.isBelow(rec.gasUsed, 910000);
-  });
-
-  describe("#requestEthereumPrice", () => {
+  describe("#updateUptime", () => {
     it("triggers a log event in the Oracle contract", async () => {
-      let tx = await cc.requestEthereumPrice("usd");
+      let tx = await cc.updateUptime("usd");
 
       let events = await getEvents(oc);
       assert.equal(1, events.length)
       let event = events[0]
-      assert.equal(event.args.data, `{"url":"https://etherprice.com/api","path":["recent","usd"]}`)
-      assert.equal(web3.toUtf8(event.args.jobId), "someJobId");
-    });
+      assert.equal(event.args.data, `{"url":"https://status.heroku.com/api/ui/availabilities?filter%5Bregion%5D=US&page%5Bsize%5D=60","path":["data","0","attributes","calculation"]}`)
 
-    it("has a reasonable gas cost", async () => {
-      let tx = await cc.requestEthereumPrice("usd");
-      assert.isBelow(tx.receipt.gasUsed, 120000);
+      assert.equal(web3.toUtf8(event.args.jobId), jobId);
     });
   });
 
   describe("#fulfillData", () => {
-    let response = "1,000,000.00";
+    let response = "0x00000000000000000000000000000000000000000000000000000000000f8c4c";
     let requestId;
 
     beforeEach(async () => {
-      await cc.requestEthereumPrice("usd");
+      await cc.updateUptime("usd");
       let event = await getLatestEvent(oc);
       requestId = event.args.id
     });
@@ -48,8 +39,8 @@ contract('UptimeSLA', () => {
     it("records the data given to it by the oracle", async () => {
       await oc.fulfillData(requestId, response, {from: oracleNode})
 
-      let received = await cc.currentPrice.call();
-      assert.equal(web3.toUtf8(received), response);
+      let received = await cc.current.call();
+      assert.equal(1018956, response);
     });
 
     context("when the consumer does not recognize the request ID", () => {
@@ -60,14 +51,14 @@ contract('UptimeSLA', () => {
       });
 
       it("does not accept the data provided", async () => {
-        let tx = await cc.requestEthereumPrice("usd");
+        let tx = await cc.updateUptime("usd");
 
         await assertActionThrows(async () => {
           await oc.fulfillData(requestId, response, {from: oracleNode})
         });
 
-        let received = await cc.currentPrice.call();
-        assert.equal(web3.toUtf8(received), "");
+        let received = await cc.current.call();
+        assert.equal(received, 0);
       });
     });
 
@@ -77,8 +68,8 @@ contract('UptimeSLA', () => {
           await cc.fulfill(requestId, response, {from: oracleNode})
         });
 
-        let received = await cc.currentPrice.call();
-        assert.equal(web3.toUtf8(received), "");
+        let received = await cc.current.call();
+        assert.equal(received, 0);
       });
     });
   });
