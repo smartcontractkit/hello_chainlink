@@ -47,22 +47,13 @@ function updateUptime(string _when) public {
 
 The API returns the percentage as a float, for example the current value is `0.999999178716033`. The `multiply` adapter takes that result and multiplies it by 1000, which [a parameter specified in the `times` field](https://github.com/smartcontractkit/hello_chainlink/blob/4b42f127ddeca6541ac2aba1803f458d0a3bf460/uptime_sla/http_json_x10000_job.json). The result is `9999`, allowing the contract to check for "four nines" of uptime.
 
-
 ## Requirements
 
 - Go 1.9+
 - Node JS
 - Docker
 
-## Run Chainlink Development Environment
-
-1. Check out repo [smartcontractkit/chainlink](https://github.com/smartcontractkit/chainlink) and navigate to folder.
-2. Run `./internal/bin/devnet`
-3. Run truffle migrations:
-  1. `cd solidity`
-  2. `yarn install`
-  3. `./node_modules/.bin/truffle migrate --network devnet`
-4. Run `./internal/bin/cldev` in top level repo folder
+## Configure and run [Chainlink development environment](../README.md)
 
 ## Run and update the Uptime SLA contract.
 

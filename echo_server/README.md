@@ -12,15 +12,7 @@ step to bridging on chain to off chain activity.
 - Node JS
 - Docker
 
-## Run Chainlink Development Environment
-
-1. Check out repo [smartcontractkit/chainlink](https://github.com/smartcontractkit/chainlink) and navigate to folder.
-2. Run `./internal/bin/devnet`
-3. Run truffle migrations:
-  1. `cd solidity`
-  2. `yarn install`
-  3. `./node_modules/.bin/truffle migrate --network devnet`
-4. Run `./internal/bin/cldev` in top level repo folder
+## Configure and run [Chainlink development environment](../README.md)
 
 ## Run Echo Server EthLog (Raw Ethereum Logs)
 
