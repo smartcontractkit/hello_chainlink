@@ -3,6 +3,12 @@
 This is a repository of introductory [Chainlink](https://github.com/smartcontractkit/chainlink) integrations.
 Please click on each folder for more information.
 
+## Requirements
+
+- Go 1.9+
+- Node JS
+- Docker
+
 ## Run Chainlink Development Environment
 
 Each example requires the development environment, set up as follows:

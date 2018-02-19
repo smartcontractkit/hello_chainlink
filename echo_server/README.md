@@ -6,12 +6,6 @@ step to bridging on chain to off chain activity.
 
 ![Log Echo Server](screenshot.jpg?raw=true "Log Echo Server")
 
-## Requirements
-
-- Go 1.9+
-- Node JS
-- Docker
-
 ## Configure and run [Chainlink development environment](../README.md)
 
 ## Run Echo Server EthLog (Raw Ethereum Logs)
