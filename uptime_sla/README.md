@@ -52,8 +52,6 @@ The API returns the percentage as a float, for example the current value is `0.9
 ## Run and update the Uptime SLA contract.
 
 1. Check out this repo and go to folder [hello_chainlink/uptime_sla](https://github.com/smartcontractkit/hello_chainlink/tree/master/uptime_sla).
-2. `./create_http_json_x10000_job` to create Wei Watchers Chainlink job
-3. `yarn install`
-4. `node echo.js`
-5. `./node_modules/.bin/truffle migrate` in another window
-6. Run `node send_sla_transaction.js` to trigger an update to the SLA
+2. `yarn install`
+3. `./node_modules/.bin/truffle migrate` in another window
+4. Run `node send_sla_transaction.js` to trigger an update to the SLA

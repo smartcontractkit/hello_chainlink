@@ -3,10 +3,10 @@
 var Web3            = require('web3'),
     contract        = require("truffle-contract"),
     path            = require('path')
-    UptimeSLAJSON   = require(path.join(__dirname, 'build/contracts/EthLog.json'));
+    UptimeSLAJSON   = require(path.join(__dirname, 'build/contracts/UptimeSLA.json'));
 
 var provider = new Web3.providers.HttpProvider("http://localhost:18545");
-var UptimeSLA = artifacts.require("./UptimeSLA.sol");
+var UptimeSLA = contract(UptimeSLAJSON);
 UptimeSLA.setProvider(provider);
 var devnetAddress = "0x9CA9d2D5E04012C9Ed24C0e513C9bfAa4A2dD77f";
 

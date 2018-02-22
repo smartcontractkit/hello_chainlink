@@ -7,6 +7,7 @@
     "request": "^2.83.0",
     "solidity-stringutils": "github:Arachnid/solidity-stringutils",
     "truffle": "^4.0.6",
+    "truffle-contract": "^3.0.3",
     "zeppelin-solidity": "github:OpenZeppelin/zeppelin-solidity"
   }
 }
