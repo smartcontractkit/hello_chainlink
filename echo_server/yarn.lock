@@ -78,7 +78,7 @@ camelcase@^3.0.0:
 
 "chainlink@github:smartcontractkit/chainlink":
   version "0.0.0"
-  resolved "git+ssh://git@github.com/smartcontractkit/chainlink.git#acd38137325c250fc90f2ddadb1f1f43e38e53e3"
+  resolved "https://codeload.github.com/smartcontractkit/chainlink/tar.gz/42e8a59a5fe96d2a3603203f7afa55f674c8b54d"
 
 cliui@^3.2.0:
   version "3.2.0"
