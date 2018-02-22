@@ -54,4 +54,4 @@ The API returns the percentage as a float, for example the current value is `0.9
 1. Check out this repo and go to folder [hello_chainlink/uptime_sla](https://github.com/smartcontractkit/hello_chainlink/tree/master/uptime_sla).
 2. `yarn install`
 3. `./node_modules/.bin/truffle migrate` in another window
-4. Run `node send_sla_transaction.js` to trigger an update to the SLA
+4. `./send_sla_transaction.js` to trigger an update to the SLA
