@@ -12,11 +12,10 @@ module.exports = function(truffleDeployer) {
     console.log(`\tclient: ${client}`);
     console.log(`\tservice provider: ${serviceProvider}`);
 
-    truffleDeployer.deploy(UptimeSLA, client, serviceProvider, 1518857382, Oracle.address, body.id, {
+    truffleDeployer.deploy(UptimeSLA, client, serviceProvider, Oracle.address, body.id, {
       value: 1000000000
     });
-  }, function(error, response) {
+  }, function(error) {
     console.log("chainlink error:", error);
-    console.log("response status:", response.statusCode);
   });
 };

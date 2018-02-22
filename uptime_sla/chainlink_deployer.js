@@ -10,7 +10,7 @@ module.exports = {
       console.log(`Posting to ${url}:\n`, data);
       request.post(url, {json: data},
         function (error, response, body) {
-          if (!error && response.statusCode == 200) {
+          if (!error && response && response.statusCode == 200) {
             callback(error, response, body);
           } else {
             if (callbackError) {

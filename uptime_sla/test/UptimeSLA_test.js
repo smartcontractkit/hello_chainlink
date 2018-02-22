@@ -13,10 +13,10 @@ contract('UptimeSLA', () => {
     client = newAddress()
     serviceProvider = newAddress();
     oc = await Oracle.new({from: oracleNode});
-    startAt = await getLatestTimestamp();
-    sla = await SLA.new(client, serviceProvider, startAt, oc.address, jobId, {
+    sla = await SLA.new(client, serviceProvider, oc.address, jobId, {
       value: deposit
     });
+    startAt = await getLatestTimestamp();
   });
 
   describe("before updates", () => {
@@ -34,7 +34,7 @@ contract('UptimeSLA', () => {
       let events = await getEvents(oc);
       assert.equal(1, events.length)
       let event = events[0]
-      assert.equal(event.args.data, `{"url":"https://status.heroku.com/api/ui/availabilities?filter%5Bregion%5D=US&page%5Bsize%5D=60","path":["data","0","attributes","calculation"]}`)
+      assert.equal(event.args.data, `{"url":"https://status.heroku.com/api/ui/availabilities","path":["data","0","attributes","calculation"]}`)
 
       assert.equal(web3.toUtf8(event.args.jobId), jobId);
     });

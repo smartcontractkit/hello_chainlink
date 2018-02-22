@@ -6,22 +6,21 @@ import "chainlink/solidity/contracts/Chainlink.sol";
 contract UptimeSLA is Chainlinked {
   uint256 constant uptimeThreshold = 9999;
   bytes32 private jobId;
-  uint256 private requestId;
   uint256 private endAt;
   address private client;
   address private serviceProvider;
+  uint256 public requestId;
   uint256 public uptime;
 
   function UptimeSLA(
     address _client,
     address _serviceProvider,
-    uint256 _startAt,
     address _oracle,
     bytes32 _jobId
   ) public payable {
     client = _client;
     serviceProvider = _serviceProvider;
-    endAt = _startAt + 30 days;
+    endAt = block.timestamp + 30 days;
     oracle = Oracle(_oracle);
     jobId = _jobId;
   }
