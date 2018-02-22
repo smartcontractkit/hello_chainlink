@@ -10,6 +10,7 @@ contract UptimeSLA is Chainlinked {
   uint256 private endAt;
   address private client;
   address private serviceProvider;
+  uint256 public uptime;
 
   function UptimeSLA(
     address _client,
@@ -37,12 +38,13 @@ contract UptimeSLA is Chainlinked {
     requestId = chainlinkRequest(run);
   }
 
-  function report(uint256 _requestId, uint256 _rate)
+  function report(uint256 _requestId, uint256 _uptime)
     public
     onlyOracle
     checkRequestId(_requestId)
   {
-    if (_rate < uptimeThreshold) {
+    uptime = _uptime;
+    if (_uptime < uptimeThreshold) {
       client.send(this.balance);
     } else if (block.timestamp >= endAt) {
       serviceProvider.send(this.balance);
