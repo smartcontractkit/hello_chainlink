@@ -1,4 +1,4 @@
 #!/bin/bash
 
 curl -u chainlink:twochains -X POST -H 'Content-Type: application/json' \
-       -d @./x100_job.json http://localhost:6688/v2/jobs
+       -d @./http_json_x10000_job.json http://localhost:6688/v2/jobs
