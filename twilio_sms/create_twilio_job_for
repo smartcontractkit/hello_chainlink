@@ -13,7 +13,7 @@ const job = {
 
 const request = require('request');
 request.post({
-  url: 'http://localhost:6688/v2/jobs',
+  url: 'http://localhost:6688/v2/specs',
   body: job,
   json: true,
   auth: {username: 'chainlink', password: 'twochains'}

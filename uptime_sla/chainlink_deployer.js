@@ -1,6 +1,6 @@
 let fs = require("fs");
 let request = require("request");
-let url = "http://chainlink:twochains@localhost:6688/v2/jobs";
+let url = "http://chainlink:twochains@localhost:6688/v2/specs";
 
 module.exports = {
   // Deploys chainlink jobs.
