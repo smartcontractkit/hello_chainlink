@@ -30,9 +30,9 @@ Uses a `runlog` initiator to echo Chainlink log events with the matching job id.
 3. `yarn install`
 4. `node echo.js`
 5. Add job id to `contracts/RunLog.sol` where it says `MY_JOB_ID`
-5. `./node_modules/.bin/truffle migrate --reset` in another window
-6. `node send_runlog_transaction.js`
-7. Wait for log to show up in echo server
+6. `./node_modules/.bin/truffle migrate --reset` in another window
+7. `node send_runlog_transaction.js`
+8. Wait for log to show up in echo server
 
 
 ## Further Reading

@@ -12,7 +12,7 @@ contract RunLog is Chainlinked {
   function request() public {
     var fid = bytes4(keccak256("fulfill(uint256,bytes32)"));
     var data = '{"msg":"hello_chainlink"}';
-    requestId = oracle.requestData("MY_JOB_ID", this, fid, data);
+    requestId = oracle.requestData(clArgsVersion, "MY_JOB_ID", this, fid, data);
   }
 
   function fulfill(uint256 _requestId, bytes32 _data)

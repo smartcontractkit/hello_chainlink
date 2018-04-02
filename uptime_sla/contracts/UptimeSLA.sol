@@ -1,7 +1,7 @@
 pragma solidity ^0.4.18;
 
 import "chainlink/solidity/contracts/Chainlinked.sol";
-import "chainlink/solidity/contracts/Chainlink.sol";
+import "chainlink/solidity/contracts/ChainlinkLib.sol";
 
 contract UptimeSLA is Chainlinked {
   uint256 constant uptimeThreshold = 9999;
@@ -26,7 +26,7 @@ contract UptimeSLA is Chainlinked {
   }
 
   function updateUptime(string _when) public {
-    Chainlink.Run memory run = newRun(jobId, this, "report(uint256,uint256)");
+    ChainlinkLib.Run memory run = newRun(jobId, this, "report(uint256,uint256)");
     run.add("url", "https://status.heroku.com/api/ui/availabilities");
     string[] memory path = new string[](4);
     path[0] = "data";
